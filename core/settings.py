@@ -97,8 +97,8 @@ REST_FRAMEWORK = {
 }
 
 # celery setup
-CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "")
-CELERY_RESULT_URL = os.getenv("CELERY_RESULT_URL", "")
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://redis:6379/0")
+CELERY_RESULT_URL = os.getenv("CELERY_RESULT_URL", "redis://redis:6379/0")
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Backend Task API Docs',
