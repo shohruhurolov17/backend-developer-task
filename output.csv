@@ -1,0 +1,2 @@
+address.city,id,address.zip,orders[0].price,orders[0].product,orders[1].product,orders[1].price,name
+Tashkent,1,100000,1200,Laptop,Mouse,25,Ali

@@ -1,0 +1,2 @@
+address.city,orders[1].product,orders[0].currency,id,orders[1].currency,orders[0].product,name,orders[0].price,orders[1].price,address.zip
+Tashkent,Mouse,USD,1,UZS,iPhone 14 Pro,Shohruh,1000,100000,100000

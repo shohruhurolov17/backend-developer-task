@@ -1,0 +1,55 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: deployments/compose/django/Dockerfile
+    env_file:
+      - .env
+    command: /start
+    ports:
+      - ${WEB_PORT:-8000}:8000
+    depends_on:
+      - db
+      - redis
+    restart: always
+    volumes:
+      - ./media:/app/media
+
+  db:
+    image: postgres:16
+    restart: always
+    ports:
+      - ${POSTGRES_EXTERNAL_PORT:-5433}:5432
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: deployments/compose/django/Dockerfile
+    command: /start-celeryworker
+    restart: always
+    depends_on:
+      - redis
+
+  celery_beat:
+    build:
+      context: .
+      dockerfile: deployments/compose/django/Dockerfile
+    command: /start-celerybeat
+    restart: always
+    depends_on:
+      - redis
+
+volumes:
+  pg_data:
