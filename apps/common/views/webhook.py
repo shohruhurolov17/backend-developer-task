@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-# from django.conf import settings
+from core import load_env
 from apps.common.models import WebhookEvent
 from  drf_spectacular.utils import extend_schema
 from apps.common.utils import verify_hmac_signature
@@ -32,7 +32,7 @@ class PaymentWebhookView(APIView):
         received_signature = request.headers.get('X-Signature', '')
         payload_bytes = request.body
 
-        secret = os.getenv("WEBHOOK_SECRET", "SuperSecretKey")
+        secret = load_env.WEBHOOK_SECRET
 
         if not verify_hmac_signature(payload_bytes, received_signature, secret):
             logger.warning("Invalid webhook signature")

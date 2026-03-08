@@ -1,13 +1,13 @@
 from pathlib import Path
-import os
+from . import load_env
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
-DEBUG = False if os.getenv('DEBUG') == "False" else True
+SECRET_KEY = load_env.DJANGO_SECRET_KEY
+DEBUG = load_env.DEBUG
 ALLOWED_HOSTS = ["*"]
+
 
 
 INSTALLED_APPS = [
@@ -62,11 +62,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB", "backend_dev_task"),
-        "USER": os.getenv("POSTGRES_USER", "postgres"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "SuperPass"),
-        "PORT": os.getenv("POSTGRES_PORT", 5432),
-        "HOST": os.getenv("POSTGRES_HOST", "localhost"),
+        "NAME": load_env.POSTGRES_DB,
+        "USER": load_env.POSTGRES_USER,
+        "PASSWORD": load_env.POSTGRES_PASSWORD,
+        "PORT": load_env.POSTGRES_PORT,
+        "HOST": load_env.POSTGRES_HOST
     }
 }
 
@@ -97,8 +97,8 @@ REST_FRAMEWORK = {
 }
 
 # celery setup
-CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://redis:6379/0")
-CELERY_RESULT_URL = os.getenv("CELERY_RESULT_URL", "redis://redis:6379/0")
+CELERY_BROKER_URL = load_env.CELERY_BROKER_URL
+CELERY_RESULT_URL = load_env.CELERY_RESULT_URL
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Backend Task API Docs',

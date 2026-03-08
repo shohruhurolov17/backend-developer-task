@@ -2,7 +2,7 @@ import asyncio
 import aiohttp
 import asyncpg
 from bs4 import BeautifulSoup
-from django.conf import settings
+from core import load_env
 import os
 from pathlib import Path
 
@@ -86,11 +86,11 @@ async def main():
     semaphore = asyncio.Semaphore(20)
 
     pool = await asyncpg.create_pool(
-        user=os.getenv('POSTGRES_USER'),
-        password=os.getenv('POSTGRES_PASSWORD'),
-        database=os.getenv('POSTGRES_DB'),
-        host=os.getenv('POSTGRES_HOST'),
-        port=os.getenv('POSTGRES_PORT'),
+        user=load_env.POSTGRES_USER,
+        password=load_env.POSTGRES_PASSWORD,
+        database=load_env.POSTGRES_DB,
+        host=load_env.POSTGRES_HOST,
+        port=load_env.POSTGRES_PORT,
         min_size=5,
         max_size=20
     )

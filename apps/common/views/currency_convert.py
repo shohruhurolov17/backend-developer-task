@@ -7,6 +7,7 @@ import requests
 import os
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from drf_spectacular.types import OpenApiTypes
+from core import load_env
 
 
 class CurrencyConvertAPIView(APIView):
@@ -56,8 +57,8 @@ class CurrencyConvertAPIView(APIView):
 
             if rate is None:
 
-                BASE_URL = os.getenv("EXCHANGE_RATE_BASE_URL", 'https://v6.exchangerate-api.com/v6')
-                API_KEY = os.getenv("EXCHANGE_RATE_API_KEY", '57283f9d13f8da6636f39433')
+                BASE_URL = load_env.EXCHANGE_RATE_BASE_URL
+                API_KEY = load_env.EXCHANGE_RATE_API_KEY
 
                 url = f"{BASE_URL}/{API_KEY}/latest/{from_currency}"
 
