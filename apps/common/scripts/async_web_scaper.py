@@ -2,9 +2,10 @@ import asyncio
 import aiohttp
 import asyncpg
 from bs4 import BeautifulSoup
-from core import load_env
 import os
 from pathlib import Path
+from django.conf import settings
+
 
 def parse_html(html):
 
@@ -85,12 +86,14 @@ async def main():
 
     semaphore = asyncio.Semaphore(20)
 
+    database_conf = settings.DATABASES['default']
+
     pool = await asyncpg.create_pool(
-        user=load_env.POSTGRES_USER,
-        password=load_env.POSTGRES_PASSWORD,
-        database=load_env.POSTGRES_DB,
-        host=load_env.POSTGRES_HOST,
-        port=load_env.POSTGRES_PORT,
+        user=database_conf['USER'],
+        password=database_conf['PASSWORD'],
+        database=database_conf['NAME'],
+        host=database_conf['HOST'],
+        port=database_conf['PORT'],
         min_size=5,
         max_size=20
     )

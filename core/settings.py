@@ -1,13 +1,22 @@
 from pathlib import Path
-from . import load_env
+from environs import env
 
+env.read_env('.env')
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = load_env.DJANGO_SECRET_KEY
-DEBUG = load_env.DEBUG
+SECRET_KEY = env('DJANGO_SECRET_KEY')
+DEBUG = env('DEBUG')
 ALLOWED_HOSTS = ["*"]
 
+
+# EXCHANGE RATE
+EXCHANGE_RATE_BASE_URL = env("EXCHANGE_RATE_BASE_URL")
+EXCHANGE_RATE_API_KEY = env("EXCHANGE_RATE_API_KEY")
+
+
+# WEBHOOK
+WEBHOOK_SECRET = env("WEBHOOK_SECRET")
 
 
 INSTALLED_APPS = [
@@ -62,11 +71,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": load_env.POSTGRES_DB,
-        "USER": load_env.POSTGRES_USER,
-        "PASSWORD": load_env.POSTGRES_PASSWORD,
-        "PORT": load_env.POSTGRES_PORT,
-        "HOST": load_env.POSTGRES_HOST
+        "NAME": env('POSTGRES_DB'),
+        "USER": env('POSTGRES_USER'),
+        "PASSWORD": env('POSTGRES_PASSWORD'),
+        "PORT": env('POSTGRES_PORT'),
+        "HOST": env('POSTGRES_HOST')
     }
 }
 
@@ -97,8 +106,8 @@ REST_FRAMEWORK = {
 }
 
 # celery setup
-CELERY_BROKER_URL = load_env.CELERY_BROKER_URL
-CELERY_RESULT_URL = load_env.CELERY_RESULT_URL
+CELERY_BROKER_URL = env('CELERY_BROKER_URL')
+CELERY_RESULT_URL = env('CELERY_RESULT_URL')
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Backend Task API Docs',
@@ -106,6 +115,18 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False
 }
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": env('CACHE_URL'),  
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+        'TIMEOUT': 300
+    }
+}
+
 
 
 # Internationalization
