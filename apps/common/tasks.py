@@ -6,7 +6,7 @@ import time
 @shared_task(bind=True)
 def process_file(self, task_id):
 
-    task = FileProcessingTask.objects.get(task_id=task_id)
+    task = FileProcessingTask.objects.get(id=task_id)
 
     task.status = "processing"
     task.save()

@@ -8,13 +8,25 @@ from apps.common.utils import verify_hmac_signature
 import json
 import logging
 import os
+from drf_spectacular.utils import OpenApiParameter
+from drf_spectacular.types import OpenApiTypes
+
 
 logger = logging.getLogger(__name__)
 
 
 class PaymentWebhookView(APIView):
 
-    @extend_schema(tags=['payment-webhook'])
+    @extend_schema(
+        tags=['payment-webhook'],
+        parameters=[
+            OpenApiParameter(
+                name='X-Signature',
+                location=OpenApiParameter.HEADER,
+                type=OpenApiTypes.STR
+            )
+        ]
+    )
     def post(self, request, *args, **kwargs):
 
         received_signature = request.headers.get('X-Signature', '')
